@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Confirm Deletion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        div, form {
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #333;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 18px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 15px;
+            border-radius: 5px;
+            color: #856404;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 15px;
+            border-radius: 5px;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+<div th:if="${object != null}" class="warning">
+    <p>Confirmez la suppression de l'objet avec ID <span th:text="${object.id}"></span> ?</p>
+
+    <form th:action="@{/operation/delete}" method="post">
+        <input type="hidden" name="id" th:value="${object.id}" />
+        <input type="hidden" name="type" th:value="${type}" />
+        <button type="submit">Oui</button>
+    </form>
+</div>
+
+<div th:if="${object == null}" class="error">
+    <p>Erreur : Objet introuvable ou type invalide.</p>
+</div>
+
+<form th:if="${type == 'compte'}" th:action="@{/compte}" method="get">
+    <button type="submit">Non</button>
+</form>
+<form th:if="${type == 'pret'}" th:action="@{/pret}" method="get">
+    <button type="submit">Non</button>
+</form>
+<form th:if="${type == 'mondat'}" th:action="@{/mondat}" method="get">
+    <button type="submit">Non</button>
+</form>
+<form th:if="${type == 'fraud'}" th:action="@{/fraud}" method="get">
+    <button type="submit">Non</button>
+</form>
+<form th:if="${type == 'dir'}" th:action="@{/dir}" method="get">
+    <button type="submit">Non</button>
+</form>
+<form th:if="${type == 'mouvment'}" th:action="@{/movment}" method="get">
+    <button type="submit">Non</button>
+</form>
+<form th:if="${type == 'habi'}" th:action="@{/habi}" method="get">
+    <button type="submit">Non</button>
+</form>
+<form th:if="${type == 'service'}" th:action="@{/service}" method="get">
+    <button type="submit">Non</button>
+</form>
+
+</body>
+</html>

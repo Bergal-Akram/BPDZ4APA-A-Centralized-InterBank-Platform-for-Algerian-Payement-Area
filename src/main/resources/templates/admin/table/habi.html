@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />   
+    <title>bpdz</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav__header">
+        <div class="nav__logo">
+          <a class="logo">BPDZ</a>
+        </div>
+      </div>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="/login" data-i18n="home_tr">HOME</a></li>
+        <li class="dropdown">
+          <a><span data-i18n="SERVICES_tr">SERVICES</span> <i class="ri-arrow-down-s-line"></i></a>
+          <ul class="dropdown-content">
+            <li class="dropdown-item">
+              <a> <span data-i18n="ViewTables_tr">View Tables</span> <i class="ri-arrow-right-s-line"></i></a>
+              <ul class="dropdown-submenu">
+                <li><a href="/archive" data-i18n="Archive_tr">Archive</a></li>
+                <li><a href="/movment" data-i18n="movements_tr">movement</a></li>
+                <li><a href="/compte" data-i18n="accounts_tr">account</a></li>
+                <li><a href="/dir" data-i18n="directory_tr">directory</a></li>
+                <li><a href="/fraud" data-i18n="fraud_tr">fraud</a></li>
+                <li><a href="/mondat" data-i18n="mondat_tr">mondat</a></li>
+                <li><a href="/pret" data-i18n="loan_tr">loan</a></li>
+                <li><a href="/habi" data-i18n="habilitation_tr">habilitation</a></li>
+                <li><a href="/service" data-i18n="services_tr">service</a></li>
+              </ul>
+            </li>
+            <li><a href="/admin/add/add_auditor/add_audi" data-i18n="Add_table_tr">Add Table</a></li>
+            <li><a href="/admin/add/add_compte/add_prof" data-i18n="Add_Account_tr">Add Account</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="nav__btns">
+        <li><a href="/profile">PROFILE</a></li>
+        <select id="language-select" class="lang">
+          <option value="en">EN</option>
+          <option value="fr">FR</option>
+        </select>
+        <button id="toggleDarkMode" class="lang" data-i18n="dark_mode">Dark Mode</button>
+      </div>
+    </nav>
+
+
+
+    <form class="section__container search__input" th:action="@{/searchhabi}" th:object="${search}" method="POST">
+      <h1 data-i18n="TableHabilitation_tr"></h1>
+        <input type="text" name="search" placeholder="Write" th:value="${search}">
+        <button type="submit" data-i18n="Search_tr">Search</button>
+    </form>
+
+    <div th:if="${successMessage}" class="alert alert-success">
+      <p th:text="${successMessage}"></p>
+  </div>
+  
+  <!-- Error message -->
+  <div th:if="${errorMessage}" class="alert alert-danger">
+      <p th:text="${errorMessage}"></p>
+  </div>
+
+<!-- Table Habi -->
+<table class="section__container">
+  <thead>
+    <tr>
+      <th data-i18n="id_tr">ID</th>
+      <th data-i18n="bic_tr">bic</th>
+      <th data-i18n="Last_Name_tr">Last Name</th>
+      <th data-i18n="First_Name_tr">First Name</th>
+      <th data-i18n="Adresse_IP_tr">IP Address</th>
+      <th data-i18n="Port_Reception_tr">Receiving Port</th>
+      <th data-i18n="Adresse_Secours_tr">Backup IP Address</th>
+      <th data-i18n="Port_Réception_Secours_tr">Backup Receiving Port</th>
+      <th>Role</th>
+      <th data-i18n="Permissions_tr">Permissions</th>
+      <th data-i18n="Email_tr">Email</th>
+      <th data-i18n="Password_tr">Password</th>
+      <th data-i18n="action_tr">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <tr th:each ="habi:${habi}">
+        <td th:text="${habi.id}"></td>
+        <td th:text="${habi.banque.getBic()}"></td>
+        <td th:text="${habi.nom}"></td>
+        <td th:text="${habi.prenom}"></td>
+        <td th:text="${habi.adresseIP}"></td>
+        <td th:text="${habi.portReception}"></td>
+        <td th:text="${habi.adresseipsecours}"></td>
+        <td th:text="${habi.portReceptionSecours}"></td>
+        <td th:text="${habi.role}"></td>
+        <td th:text="${habi.permissions}"></td>
+        <td th:text="${habi.login}"></td>
+        <td th:text="${habi.motDePasse}"></td>
+      <td>
+        <div class="action-links">
+          <form th:action="@{/operation/confirmdelete(id=${habi.id}, type='habi')}" method="get">
+            <input type="hidden" name="id" th:value="${habi.id}" />
+            <input type="hidden" name="type" value="habi" />
+            <button type="submit" data-i18n="delete_tr">Delete</button>
+          </form>
+          <form th:action="@{/operation/edithabi}" method="get">
+          <input type="hidden" name="id" th:value="${habi.id}" />
+          <button type="submit" class="modify" data-i18n="modify_tr">Change</button>
+          </form>
+        </div> 
+      </td>
+      <td>
+    </tr>
+  </tbody>
+</table>
+<!-- Form Modify Habi -->
+<div class="section__container modify-form-container">
+    <h2>Modifier une habilitation</h2>
+    <form th:action="@{/operation/updateHabi}" th:object="${habiToEdit}" method="post">
+        
+                   <div class="form-grouppp">
+            <label>ID</label>
+            <input type="number" th:field="*{id}"/>
+        </div>
+        
+        <div class="form-grouppp">
+            <label>ID Banque</label>
+           <input type="text" th:value="${habiToEdit.banque.getBic()}"  name="banqueBic"  />
+        </div>
+        
+        <div class="form-grouppp">
+            <label>NOM</label>
+            <input type="text" th:field="*{nom}" />
+        </div>
+        
+        <div class="form-grouppp">
+            <label>prenom</label>
+            <input type="text" th:field="*{prenom}" />
+        </div>
+        
+        <div class="form-grouppp">
+            <label>adresseIP</label>
+            <input type="text" th:field="*{adresseIP}" />
+        </div>
+        
+        <div class="form-grouppp">
+            <label>portReceptionSecours</label>
+            <input type="text" th:field="*{portReceptionSecours}" />
+        </div>
+        
+        <div class="form-grouppp">
+            <label>adresseipsecours</label>
+            <input type="text" th:field="*{adresseipsecours}" />
+        </div>
+        
+        <div class="form-grouppp">
+            <label>portReception</label>
+            <input type="text" th:field="*{portReception}" />
+        </div>
+        
+        <div class="form-grouppp">
+            <label>permissions</label>
+            <input type="text" th:field="*{permissions}" />
+        </div>
+        <div class="form-grouppp">
+            <label for="role">Rôle:</label>
+                                <select id="role" th:field="*{role}">
+                                    <option value="User">User</option>
+                                    <option value="Viewer">Viewer</option>
+                                    <option value="Modifier">Modifier</option>
+                                    <option value="Admin">Admin</option>
+                                </select>
+        </div>
+        <div class="form-grouppp">
+            <label>login</label>
+            <input type="text" th:field="*{login}" />
+        </div>
+        <div class="form-grouppp">
+            <label>motDePasse</label>
+            <input type="password" th:field="*{motDePasse}" />
+        </div>
+        
+        <div class="form-actionsss">
+            <button type="submit">Save Changes</button>
+        </div>
+    </form>
+    
+</div>
+
+<script src="/js/main.js"></script>
+<script src="/js/language.js"></script>
+<script src="/js/darkmode.js"></script>
+</body>
+</html>

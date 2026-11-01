@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <title>BPDZ</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav__header">
+        <div class="nav__logo">
+          <a class="logo">BPDZ</a>
+        </div>
+      </div>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="/login" data-i18n="home_tr">HOME</a></li>
+        <li class="dropdown">
+          <a><span data-i18n="SERVICES_tr">SERVICES</span> <i class="ri-arrow-down-s-line"></i></a>
+          <ul class="dropdown-content">
+            <li class="dropdown-item">
+              <a> <span data-i18n="ViewTables_tr">View Tables</span> <i class="ri-arrow-right-s-line"></i></a>
+              <ul class="dropdown-submenu">
+                <li><a href="/archive" data-i18n="Archive_tr">Archive</a></li>
+                <li><a href="/movment" data-i18n="movements_tr">movement</a></li>
+                <li><a href="/compte" data-i18n="accounts_tr">account</a></li>
+                <li><a href="/dir" data-i18n="directory_tr">directory</a></li>
+                <li><a href="/fraud" data-i18n="fraud_tr">fraud</a></li>
+                <li><a href="/mondat" data-i18n="mondat_tr">mondat</a></li>
+                <li><a href="/pret" data-i18n="loan_tr">loan</a></li>
+                <li><a href="/habi" data-i18n="habilitation_tr">habilitation</a></li>
+                <li><a href="/service" data-i18n="services_tr">service</a></li>
+              </ul>
+            </li>
+            <li><a href="/admin/add/add_auditor/add_audi" data-i18n="Add_table_tr">Add Table</a></li>
+            <li><a href="/admin/add/add_compte/add_prof" data-i18n="Add_Account_tr">Add Account</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="nav__btns">
+        <li><a href="/profile">PROFILE</a></li>
+        <select id="language-select" class="lang">
+          <option value="en">EN</option>
+          <option value="fr">FR</option>
+        </select>
+        <button id="toggleDarkMode" class="lang" data-i18n="dark_mode">Dark Mode</button>
+      </div>
+    </nav>  
+ 
+  
+        <div class="section__container">
+
+        <div id="formSection" class="form-group">
+            <label for="pacsType" data-i18n="select_type_acc__tr">Select Type Account :</label>
+            <select id="pacsType" onchange="showSelectedForm()">
+                <option value="bank" data-i18n="bank_tr">bank</option>
+                <option value="user" data-i18n="user_bank_tr">User bank</option>
+                <option value="reserv">compte (reserve/courant)</option>
+              </select>
+
+            <!-- Bank -->
+            <form id="bank" th:action="@{/operation/dir/add}" th:object="${dir}" method="post" class="pacs-form">
+              <h1 data-i18n="add_bank_tr"> Add Bank </h1> 
+
+              <label for="NomBanque" data-i18n="bank_name_tr">Bank Name:</label>
+              <input type="text" id="nomBanque" th:field="*{nomBanque}" maxlength="50" required />
+          
+              <label for="CodeBanque" data-i18n="code_bank_tr">Bank Code:</label>
+              <input type="text" id="codeBanque" th:field="*{codeBanque}" maxlength="50" required />
+          
+              <label for="BIC" data-i18n="bic_tr">BIC Code</label>
+              <input type="text" id="bic" th:field="*{bic}" maxlength="11"
+                                 pattern="[A-Za-z]{4}[A-Za-z]{2}[A-Za-z0-9]{2}([A-Za-z0-9]{3})?" title="BIC must be 8 numeric characters" required />
+          
+              <label for="ISO20022Integration" data-i18n="ISO20022_tr">Integration ISO20022:</label>
+              <select id="iso20022Integration" th:field="*{iso20022Integration}">
+                <option value="O" data-i18n="yes_tr">Yes</option>
+                <option value="N" selected data-i18n="no_tr">NO</option>
+              </select>
+          
+              <label for="nomCorrespondant" data-i18n="Corresponding_Name_tr">Corresponding Name:</label>
+              <input type="text" id="nomCorrespondant" th:field="*{nomCorrespondant}" maxlength="50" required />
+          
+              <label for="mail" data-i18n="Email_tr">Email</label>
+              <input type="email" id="mail" th:field="*{mail}" maxlength="100" required />
+          
+              <label for="tel" data-i18n="Phone_tr">Phone:</label>
+              <input type="tel" id="tel" th:field="*{tel}" maxlength="15" required />
+          
+              <label for="Abonnement" data-i18n="Abonnement_tr">Subscription:</label>
+              <select id="abonnement" th:field="*{abonnement}" required>
+                <option value="P1">P1</option>
+                <option value="P2">P2</option>
+                <option value="P3">P3</option>
+                <option value="P4">P4</option>
+            </select>
+            
+            <label for="pret">Accepte les prêts:</label>
+            <input type="checkbox" id="pret" th:field="*{pret}" />
+
+            <button type="submit" data-i18n="add_tr">Add</button>
+
+            </form>
+            
+            
+
+                <!-- 4 user -->
+                <form id = "user" th:action="@{/operation/addhabi}" th:object="${habi}" method="post" class="pacs-form hidden">
+              <h1 data-i18n="add_user_bvaa_tr"> Add user for ( User bank & Viewer & Auditor & Admin ) </h1>
+                <label for="NomBanque">Select Role :</label>
+                <select id="role" th:field="*{role}">
+                  <option value="User" data-i18n="User_bank_tr">User bank</option>
+                  <option value="Viewer" data-i18n="veiw_tr">Viewer</option>
+                  <option value="Modifier" data-i18n="auditor_tr">Auditor</option>
+                  <option value="Admin" data-i18n="admin_tr">Admin</option>
+              </select>
+              
+                <label for="BIC" data-i18n="bic_tr">BIC Code</label>
+                <input type="text" id="bic" name="bic"
+                                       maxlength="11"
+                                       pattern="[A-Za-z]{4}[A-Za-z]{2}[A-Za-z0-9]{2}([A-Za-z0-9]{3})?"
+                                       title="BIC doit comporter entre 8 et 11 caractères"
+                                       required>
+              
+                <label for="nom" data-i18n="First_Name_tr">First Name:</label>
+                <input type="text" id="nom" th:field="*{nom}" maxlength="15" required><br><br>
+              
+                <label for="prenom" data-i18n="Last_Name_tr">Last Name:</label>
+                <input type="text" id="prenom" th:field="*{prenom}" maxlength="15" required><br><br>
+              
+                <label for="login" data-i18n="Email_tr">Email:</label>
+                <input type="text" id="login" th:field="*{login}" maxlength="80" required><br><br>
+              
+                <label for="motdepasse" data-i18n="Password_tr">Password:</label>
+                <input type="password" id="motDePasse" th:field="*{motDePasse}" maxlength="80" required><br><br>
+              
+                <label for="adresse_ip" data-i18n="Adresse_IP_tr">IP Address</label>
+                <input type="text" id="adresseIP" th:field="*{adresseIP}" maxlength="50" required><br><br>
+              
+                <label for="port_reception" data-i18n="Port_Reception_tr">Reception Port</label>
+                <input type="number" id="portReception" th:field="*{portReception}" min="1" max="65535" required><br><br>
+              
+                <label for="adresse_ip_secours" data-i18n="Adresse_Secours_tr">Backup IP Address</label>
+                <input type="text" id="adresseipsecours" th:field="*{adresseipsecours}" maxlength="50"><br><br>
+              
+                <label for="port_reception_secours" data-i18n="Port_Réception_Secours_tr">Backup Reception Port</label>
+                <input type="number" id="portReceptionSecours" th:field="*{portReceptionSecours}" min="1" max="65535"><br><br>
+              
+                <label for="permissions">Permissions:</label>
+                                <textarea id="permissions" th:field="*{permissions}" rows="3" cols="40"></textarea>
+            
+                    <button type="submit" data-i18n="add_tr">Add</button>
+
+            </form>
+
+            <form id ="reserv" th:action="@{/operation/comptes/add}" method="post" th:object="${compte}" class="pacs-form">
+
+              <label for="numeroCompte">Numéro de Compte:</label>
+              <input type="text" id="numeroCompte" th:field="*{numeroCompte}" required />
+              <br/><br/>
+              
+              <label for="natureCompte">Nature du Compte:</label>
+              <select id="natureCompte" th:field="*{natureCompte}" required>
+                  <option value="Courant">Courant</option>
+                  <option value="Reserve">Réserve</option>
+              </select>
+              <br/><br/>
+              
+              <label for="solde">Solde:</label>
+              <input type="number" step="0.01" th:field="*{solde}" id="solde" required />
+              <br/><br/>
+              
+              <label for="dateSolde">Date Solde:</label>
+              <input type="date" th:field="*{dateSolde}" id="dateSolde" />
+              <br/><br/>
+              
+              <label for="devise">Devise:</label>
+              <input type="text" id="devise" th:field="*{devise}" placeholder="DA" />
+              <br/><br/>
+              
+              <label for="bic">BIC de la Banque:</label>
+              <input type="text" id="bic" name="bic" required />
+              <br/><br/>
+              
+              <button type="submit">Ajouter</button>
+
+          </form>
+
+    </div>
+</div>
+    <script src="/js/main.js"></script>
+    <script src="/js/form.js"></script>
+    <script src="/js/language.js"></script>
+    <script src="/js/darkmode.js"></script>
+</body>
+</html>

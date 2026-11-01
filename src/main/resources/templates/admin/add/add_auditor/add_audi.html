@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <title>BPDZ</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav__header">
+        <div class="nav__logo">
+          <a class="logo">BPDZ</a>
+        </div>
+      </div>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="/login" data-i18n="home_tr">HOME</a></li>
+        <li class="dropdown">
+          <a><span data-i18n="SERVICES_tr">SERVICES</span> <i class="ri-arrow-down-s-line"></i></a>
+          <ul class="dropdown-content">
+            <li class="dropdown-item">
+              <a> <span data-i18n="ViewTables_tr">View Tables</span> <i class="ri-arrow-right-s-line"></i></a>
+              <ul class="dropdown-submenu">
+                <li><a href="/archive" data-i18n="Archive_tr">Archive</a></li>
+                <li><a href="/movment" data-i18n="movements_tr">movement</a></li>
+                <li><a href="/compte" data-i18n="accounts_tr">account</a></li>
+                <li><a href="/dir" data-i18n="directory_tr">directory</a></li>
+                <li><a href="/fraud" data-i18n="fraud_tr">fraud</a></li>
+                <li><a href="/mondat" data-i18n="mondat_tr">mondat</a></li>
+                <li><a href="/pret" data-i18n="loan_tr">loan</a></li>
+                <li><a href="/habi" data-i18n="habilitation_tr">habilitation</a></li>
+                <li><a href="/service" data-i18n="services_tr">service</a></li>
+              </ul>
+            </li>
+            <li><a href="/admin/add/add_auditor/add_audi" data-i18n="Add_table_tr">Add Table</a></li>
+            <li><a href="/admin/add/add_compte/add_prof" data-i18n="Add_Account_tr">Add Account</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="nav__btns">
+        <li><a href="/profile">PROFILE</a></li>
+        <select id="language-select" class="lang">
+          <option value="en">EN</option>
+          <option value="fr">FR</option>
+        </select>
+        <button id="toggleDarkMode" class="lang" data-i18n="dark_mode">Dark Mode</button>
+      </div>
+    </nav>  
+
+
+        <div class="section__container">
+
+        <div id="formSection" class="form-group">
+            <label for="pacsType" data-i18n="select_add_flm" >SELECT :</label>
+            <select id="pacsType" onchange="showSelectedForm()">
+                <option value="add_fraud" data-i18n="add_fraud_tr" >Add Fraud</option>
+                <option value="add_pret" data-i18n="add_pret_tr" >Add Loan</option>
+                <option value="add_mondat" data-i18n="add_mondat_tr" >Add Mondat</option>
+              
+            </select>
+            
+            <!-- Add Fraud Form -->
+            <form id="add_fraud" class="pacs-form" th:action="@{/operation/fraud/add}" method="post" th:object="${fraud}">
+              <h1 data-i18n="add_fraud_tr"> Add Fraud </h1>
+              
+              <label data-i18n="info_type_tr">Information Type :</label>
+                <select name="typeInformation" th:field="*{typeInformation}" required>
+                        <option value="" data-i18n="select_type_tr" >Select Type</option>
+                        <option value="BIC" data-i18n="bic_tr" >BIC Code</option>
+                        <option value="BANK_NAME" data-i18n="bank_name_tr" >Bank Name</option>
+                        <option value="COUNTRY" data-i18n="country_code_tr" >Country Code</option>
+                    </select>
+  
+                    <label data-i18n="info_interdite_tr">Prohibited information</label>
+                    <input type="text" name="informationInterdite" th:field="*{informationInterdite}" placeholder="e.g., FR123456789" required>
+
+                    <label data-i18n="reason_tr">Raison</label>
+                    <input type="text" name="raison" th:field="*{raison}" placeholder="Motif de l'interdiction" required>
+
+                    <button type="submit"  data-i18n="add_tr">Add</button>
+                </form>
+
+                <!-- Add Pret Form -->
+                <form id="add_pret"th:action="@{/operation/add}" th:object="${pret}" method="post" class="pacs-form hidden">
+                  <h1 data-i18n="add_pret_tr"> Add Loan </h1>
+
+                  <label>ID agent</label>
+                  <input type="number" name="agentId" required /><br><br>
+
+                  <label for="bic_code" data-i18n="bic_tr">BIC Code:</label>
+                  <input type="text" name="bic" required /><br><br>
+                    
+                    <label for="montant_pret" data-i18n="loan_amount_tr">Loan Amount:</label>
+                    <input type="number" step="10" th:field="*{montantPret}" required /><br><br>
+                    
+                    <label for="date_pret" data-i18n="loan_date_tr">Loan Date:</label>
+                    <input type="date" th:field="*{datePret}" required /><br><br>
+                    
+                    <label for="date_prise_en_charge" data-i18n="pick_up_date_tr">Date of Pick-up</label>
+                    <input type="date" th:field="*{datePriseEnCharge}" required /><br><br>
+                    
+
+                    <button type="submit" data-i18n="add_tr">Add</button>
+                
+                </form>
+                
+                <form id="add_mondat" th:action="@{/operation/mandat/add}" th:object="${mandat}" method="post" class="pacs-form hidden">
+                  <h1 data-i18n="add_mondat_tr"> Add Mondat </h1>
+
+
+                  <label for="bic_code" data-i18n="bic_tr">BIC Code</label>
+                  <input type="text" name="bic" required /><br><br>
+                  
+
+                  <label> ID compte</label>
+                  <input type="text" name="idCompte" required />
+
+
+                  <label for="date_mondat" data-i18n="date_mondat_tr">Date Mondat</label>
+                  <input type="date" th:field="*{dateMandat}" required /><br><br>
+                  
+                    <button type="submit" data-i18n="add_tr">Add</button>
+                
+                </form>
+                
+                
+    </div>
+
+    </div>
+    <script src="/js/main.js"></script> 
+    <script src="/js/form.js"></script> 
+    <script src="/js/darkmode.js"></script>
+    <script src="/js/language.js"></script>َ
+    <script src="/js/sign.js"></script>َ
+    <script src="/js/download.js"></script>َ
+    <script src="/js/slider.js"></script>َ
+َ
+</body>
+</html>

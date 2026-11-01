@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <title>bpdz</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav__header">
+        <div class="nav__logo">
+          <a class="logo">BPDZ</a>
+        </div>
+      </div>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="/login" data-i18n="home_tr">HOME</a></li>
+        <li class="dropdown">
+          <a><span data-i18n="SERVICES_tr">SERVICES</span> <i class="ri-arrow-down-s-line"></i></a>
+          <ul class="dropdown-content">
+            <li class="dropdown-item">
+              <a> <span data-i18n="ViewTables_tr">View Tables</span> <i class="ri-arrow-right-s-line"></i></a>
+              <ul class="dropdown-submenu">
+                <li><a href="/archive" data-i18n="Archive_tr">Archive</a></li>
+                <li><a href="/movment" data-i18n="movements_tr">movement</a></li>
+                <li><a href="/compte" data-i18n="accounts_tr">account</a></li>
+                <li><a href="/dir" data-i18n="directory_tr">directory</a></li>
+                <li><a href="/fraud" data-i18n="fraud_tr">fraud</a></li>
+                <li><a href="/mondat" data-i18n="mondat_tr">mondat</a></li>
+                <li><a href="/pret" data-i18n="loan_tr">loan</a></li>
+                <li><a href="/habi" data-i18n="habilitation_tr">habilitation</a></li>
+                <li><a href="/service" data-i18n="services_tr">service</a></li>
+              </ul>
+            </li>
+            <li><a href="/auditor/add_auditor/add_audi" data-i18n="Add_table_tr">Add Table</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="nav__btns">
+        <li><a href="/profile">PROFILE</a></li>
+        <select id="language-select" class="lang">
+          <option value="en">EN</option>
+          <option value="fr">FR</option>
+        </select>
+        <button id="toggleDarkMode" class="lang" data-i18n="dark_mode">Dark Mode</button>
+      </div>
+    </nav> 
+
+
+    <form class="section__container search__input" th:action="@{/searchmovment}" th:object="${search}" method="POST">
+      <h1 data-i18n="TableMouvment_tr"></h1>
+        <input type="text" name="search" placeholder="Write" th:value="${search}">
+        <button type="submit" data-i18n="Search_tr">Search</button>
+    </form>
+
+    <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+<table class="section__container">
+  <thead>
+      <tr>
+          <th data-i18n="id_tr">ID</th>
+          <th data-i18n="Nature_Mouvement_tr">Nature Mouvement</th>
+          <th data-i18n="Statut_Mouvement_tr">Statut Mouvement</th>
+          <th data-i18n="Type_Message_tr">Type Message</th>
+          <th data-i18n="Mode_Transmission_tr">Mode Transmission</th>
+          <th data-i18n="Informations_Message_tr">Informations Message</th>
+          <th data-i18n="ID_Banque_Recepteur_tr">ID Banque Recepteur</th>
+          <th data-i18n="ID_Banque_Emetteur_tr">ID Banque Emetteur</th>
+          <th data-i18n="date_traitement_tr">Date de Traitement</th>
+          <th data-i18n="date_received_tr">Date de Réception</th>
+          <th data-i18n="date_creation_tr">Date de Création</th>
+          <th data-i18n="xml_file_tr">Fichier XML</th>
+          <th data-i18n="action_tr">Actions</th>
+      </tr>
+  </thead>
+  <tbody>
+    <tr th:each ="movment:${movment}">
+      <td th:text="${movment.id}"></td>
+      <td th:text="${movment.natureMouvement}"></td>
+      <td th:text="${movment.statutMouvement}"></td>
+      <td th:text="${movment.typeMessage}"></td>
+      <td th:text="${movment.modeTransmission}"></td>
+       <td th:text="${movment.informationsMessage}"></td>
+        <td th:text="${movment.banqueRecepteur?.getBic()}"></td>
+         <td th:text="${movment.banqueEmetteur?.getBic()}"></td>
+         <td th:text="${movment.dateTraitement}"></td>
+         <td th:text="${movment.dateReception}"></td>
+         <td th:text="${movment.dateCreation}"></td>
+         <td th:text="${movment.xmlFile}"></td>
+          <td>
+            <div class="action-links">
+              <form th:action="@{/operation/confirmdelete(id=${movment.id}, type='mouvment')}" method="get">
+                  <input type="hidden" name="id" th:value="${movment.id}" />
+                  <input type="hidden" name="type" value="mouvment" />
+                  <button type="submit" data-i18n="delete_tr">Delete</button>
+              </form>
+              <form th:action="@{/operation/editMov}" method="get">
+                <input type="hidden" name="id" th:value="${movment.id}" />
+                <button type="submit" class="action-link modify" data-i18n="modify_tr">Change</button>
+              </form>
+              <form th:action="@{/Pacs/download}" method="get">
+                <input type="hidden" name="xml" th:value="${movment.xmlFile}" />
+                <input type="hidden" name="pacs" th:value="${movment.typeMessage}" />
+                <button type="submit">download</button>
+              </form>
+            </div>
+          </td>
+      </tr>
+  </tbody>
+</table>
+
+
+<div class="section__container modify-form-container">
+  <h2 data-i18n="modify_data_tr">Modify Data</h2>
+  <form class="form-griddd" th:action="@{/operation/updateMov}" th:object="${MovToEdit}" method="post">
+      
+      <div class="form-grouppp">
+        <label for="statutMouvement" data-i18n="Statut_Mouvement_tr">Statut Mouvement:</label>
+        <select id="statutMouvement" th:field="*{statutMouvement}">
+          <option data-i18n="Select_Status_tr">-- Select Status --</option>
+            <option value="99">99</option>
+            <option value="00">00</option>
+            <option value="01">01</option>
+            <option value="02">02</option>
+            <option value="90">90</option>
+            <option value="91">91</option>
+            <option value="92">92</option>
+            <option value="93">93</option>
+            <option value="94">94</option>
+            <option value="95">95</option>
+            <option value="96">96</option>
+            <option value="97">97</option>
+            <option value="98">98</option>
+        </select>
+      </div>
+      
+
+      <div class="form-actionsss">
+          <button type="submit" data-i18n="save_change_tr">Save Changes</button>
+      </div>
+  </form>
+</div>
+<script src="/js/main.js"></script>
+<script src="/js/language.js"></script>
+<script src="/js/darkmode.js"></script>
+</body>
+</html>

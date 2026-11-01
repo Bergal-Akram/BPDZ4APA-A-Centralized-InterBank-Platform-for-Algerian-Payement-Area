@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <title>BPDZ</title>
+  </head>
+  <body>
+   <nav>
+      <div class="nav__header">
+        <div class="nav__logo">
+          <a class="logo">BPDZ</a>
+        </div>
+      </div>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="/login" data-i18n="home_tr">HOME</a></li>
+        <li class="dropdown">
+          <a><span data-i18n="SERVICES_tr">SERVICES</span> <i class="ri-arrow-down-s-line"></i></a>
+          <ul class="dropdown-content">
+            <li class="dropdown-item">
+              <a> <span data-i18n="ViewTables_tr">View Tables</span> <i class="ri-arrow-right-s-line"></i></a>
+              <ul class="dropdown-submenu">
+                <li><a href="/archive" data-i18n="Archive_tr">Archive</a></li>
+                <li><a href="/movment" data-i18n="movements_tr">movement</a></li>
+                <li><a href="/compte" data-i18n="accounts_tr">account</a></li>
+                <li><a href="/dir" data-i18n="directory_tr">directory</a></li>
+                <li><a href="/fraud" data-i18n="fraud_tr">fraud</a></li>
+                <li><a href="/mondat" data-i18n="mondat_tr">mondat</a></li>
+                <li><a href="/pret" data-i18n="loan_tr">loan</a></li>
+                <li><a href="/habi" data-i18n="habilitation_tr">habilitation</a></li>
+                <li><a href="/service" data-i18n="services_tr">service</a></li>
+              </ul>
+            </li>
+            <li><a href="/admin/add/add_auditor/add_audi" data-i18n="Add_table_tr">Add Table</a></li>
+            <li><a href="/admin/add/add_compte/add_prof" data-i18n="Add_Account_tr">Add Account</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="nav__btns">
+        <li><a href="/profile">PROFILE</a></li>
+        <select id="language-select" class="lang">
+          <option value="en">EN</option>
+          <option value="fr">FR</option>
+        </select>
+        <button id="toggleDarkMode" class="lang" data-i18n="dark_mode">Dark Mode</button>
+      </div>
+    </nav>
+
+	<header id="home" > <!-- class="section__container" -->
+		<div class="header__container">
+		  <div class="header__content">
+			<h1 data-i18n="welcome_title"> Welcome to the BPDZ Interbanking Central Platform </h1>
+		  </div>
+		</div>
+	  </header>
+	
+	  <br>
+	  <br>
+	  <br>
+	  
+	
+			<div class="slider-container">
+			  <h2 class="section__header" data-i18n="slider_h2">From Fragmentation to Unity: A New Era for Algerian Banking</h2>
+			  <p class="section__description" data-i18n="slider_p">A national step toward financial inclusion, transparency, and modernization, Accelerating transactions to fuel investment, trade, and national development,Connecting banks to boost trust, reduce costs, and drive economic performance,Making the financial system faster, smarter, and more accessible for all.</p>
+			  <div class="slider-track" id="slider-track">
+				<div class="slide"><img src="/css/image/badr.jpeg" alt="Bank 1"></div>
+				<div class="slide"><img src="/css/image/bdl.jpeg" alt="Bank 2"></div>
+				<div class="slide"><img src="/css/image/bna.png" alt="Bank 3"></div>
+				<div class="slide"><img src="/css/image/BNP-Paribas-Symbol2.png" alt="Bank 4"></div>
+				<div class="slide"><img src="/css/image/cpa.jpeg" alt="Bank 5"></div>
+				<div class="slide"><img src="/css/image/elbaraka.jpeg" alt="Bank 6"></div>
+				<div class="slide"><img src="/css/image/badr.jpeg" alt="Bank 1"></div>
+				<div class="slide"><img src="/css/image/bdl.jpeg" alt="Bank 2"></div>
+				<div class="slide"><img src="/css/image/bna.png" alt="Bank 3"></div>
+				<div class="slide"><img src="/css/image/BNP-Paribas-Symbol2.png" alt="Bank 4"></div>
+				<div class="slide"><img src="/css/image/cpa.jpeg" alt="Bank 5"></div>
+				<div class="slide"><img src="/css/image/elbaraka.jpeg" alt="Bank 6"></div>
+			  </div>
+			</div>
+	  
+			<section class="section__container discover__container">
+				<h2 class="section__header" data-i18n="part_two">Future Services and Vision</h2>
+				<p class="section__description" data-i18n="descri_part_two">
+				  Looking ahead, the APA/BPDZ platform will not only offer faster, lower-cost, and ISO 20022-compliant payment services, but will also act as a catalyst for financial inclusion and renewed trust in the banking sector. We will actively promote these services to encourage clients to rely more on banks, shifting away from cash-based habits. With increased usage, 
+				  the liquidity generated within the platform can be strategically reinvested—allowing the central bank to reduce its dependency on government funding and move toward self-sustainability. This financial independence will, in turn, fuel continuous innovation and new services on the platform. Participating banks will also benefit significantly, 
+				  gaining access to new revenue streams and a growing, more engaged customer base.
+				</p>
+				<div class="discover__grid">
+				  <div class="discover__card">
+				  <strong data-i18n="discover_card_tr1">Smart Contracts and Automated Loan Processing</strong>
+				  <button data-i18n="Read_more_tr1" class="btn" onclick="downloadPDF('/files/SMART CONTRACTS.pdf', 'SMART CONTRACTS.pdf')">Read more</button>
+				  </div>
+				  <div class="discover__card">
+				  <strong data-i18n="discover_card_tr2">Cross-Border and Multi-Currency Payments</strong>
+				  <button data-i18n="Read_more_tr1" class="btn" onclick="downloadPDF('/files/border currency.pdf', 'border currency.pdf')">Read more</button>
+				  </div>
+				  <div class="discover__card">
+				  <strong  data-i18n="discover_card_tr3">ISO 20022 as a Service (IaaS) develop and package our ISO 20022 system as a turnkey solution that banks can adopt</strong>
+				  <button data-i18n="Read_more_tr1" class="btn" onclick="downloadPDF('/files/iso20022.pdf', 'iso20022.pdf')">Read more</button>
+				  </div>
+				</div>
+				</section>
+  
+  
+	  <footer id="contact">
+		<div class="section__container footer__container">
+		  <div class="footer__col">
+			<div class="footer__logo">
+			  <a href="#" class="logo">BPDZ</a>
+			</div>
+			<p data-i18n="contact_tr">
+			  BPDZ is a unified platform designed to streamline banking operations between financial institutions through a secure and modern central system. 
+			  Leveraging advanced technologies and international standards like ISO20022, we ensure accurate and transparent transaction settlement. 
+			  We are committed to providing reliable services that enhance the efficiency of the national financial system.
+			</p>
+		  </div>
+		  <div class="footer__col">
+			<h4 data-i18n="Quick_tr">Quick Links</h4>
+			<ul class="footer__links">
+			  <li><a href="#">ISO 20022</a> </li>
+			  <li><a href="#">ISO 20022</a></li>
+			  <li><a href="#">ISO 20022</a></li>
+			  <li><a href="#">ISO 20022</a></li>
+			</ul>
+		  </div>
+		  <div class="footer__col">
+			<h4 data-i18n="contact_us_tr">Contact Us</h4>
+			<ul class="footer__links">
+			  <li>
+				<a href="#">
+				  <span><i class="ri-phone-fill"></i></span> +213 123 456 789
+				</a>
+			  </li>
+			  <li>
+				<a href="#">
+				  <span><i class="ri-record-mail-line"></i></span> info@BPDZ
+				</a>
+			  </li>
+			  <li>
+				<a href="#">
+				  <span><i class="ri-map-pin-2-fill"></i></span> ALGERIA, algeirs
+				</a>
+			  </li>
+			</ul>
+		  </div>
+		</div>
+		<div class="footer__bar" data-i18n="copyright_tr">
+		  Copyright © 2025 Platform DZ, All rights reserved.
+		</div>
+	  </footer>
+  
+	  <script src="https://unpkg.com/scrollreveal"></script>
+	  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+	  <script src="/js/main.js"></script>
+	  <script src="/js/language.js"></script>
+	  <script src="/js/darkmode.js"></script>
+	  <script src="/js/download.js"></script>
+	  <script src="/js/slider.js"></script>
+	</body>
+  </html>
+  

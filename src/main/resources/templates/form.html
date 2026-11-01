@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    
+    <title>bpdz</title>
+  </head>
+  <body>
+    <nav>
+        <div class="nav__header">
+          <div class="nav__logo">
+            <a class="logo">BPDZ</a>
+          </div>
+        </div>
+        <ul class="nav__links" id="nav-links">
+          <li><a href="/login" data-i18n="home_tr">HOME</a></li>
+          <li class="dropdown">
+            <a><span data-i18n="SERVICES_tr">SERVICES</span> <i class="ri-arrow-down-s-line"></i></a>
+            <ul class="dropdown-content">
+      <li><a href="/form">Fill Pacs</a></li>
+      <li><a href="/movment">Transfer</a></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="nav__btns">
+          <li><a href="/profile">PROFILE</a></li>
+          
+          <select id="language-select" class="lang">
+            <option value="en">EN</option>
+            <option value="fr">FR</option>
+          </select>
+          <button id="toggleDarkMode" class="lang" data-i18n="dark_mode">Dark Mode</button>
+        </div>
+      </nav>  
+
+  
+	    <div class="section__container">
+	    <h1>Form PACS</h1>
+	    <div class="form-group">
+	        <label for="actionType">Choisir une action :</label>
+	        <select id="actionType" onchange="toggleForms()">
+	            <option value="form">Remplir un formulaire</option>
+	            <option value="upload">Uploader un fichier XML</option>
+	        </select>
+	    </div>
+
+	    <div id="formSection" class="form-group">
+	        <label for="pacsType">Sélectionner le type de PACS :</label>
+	        <select id="pacsType" onchange="showSelectedForm()">
+	            <option value="pacs008">PACS.008 - Paiement clientèle</option>
+	            <option value="pacs009">PACS.009 - Paiement interbancaire</option>
+	            <option value="pacs004">PACS.004 - Retour de paiement</option>
+	            <option value="pacs003">PACS.003 - Prélèvement</option>
+	            <option value="pacs002">PACS.002</option>
+	        </select>
+
+	        <!-- PACS 008 Forms -->
+	         <form id="pacs008" class="pacs-form" th:action="@{/Pacs/generatePacs008}" method="post" th:object="${pacs008DTO}"> <!--autocomplete="on"-->
+
+	            <label>BIC de la banque initiatrice</label>
+	            <input type="text" name="InstgAgt_BIC"  th:field="*{senderBic}" title="Format BIC attendu : AAAABBCC" required placeholder="ex: BABCALXX">
+
+	            <label>BIC de la banque du bénéficiaire</label>
+	            <input type="text" name="CdtrAgt_BIC"  th:field="*{receiverBic}" >
+
+	            <label>Instruction ID (InstrId):</label>
+	            <input type="text" name="instrId"  th:field="*{instructionId}" required><br>
+	            
+	            <label>End to End ID (EndToEndId):</label>
+	            <input type="text" name="endToEndId"  th:field="*{endToEndId}" required><br>
+	            
+	            <label>Amount:</label>
+	            <input type="number" name="amount" step="0.01" required min="1" th:field="*{amount}"  placeholder="ex: 1000.00"><br>
+	            
+	            <label>Currency:</label>
+	            <input type="text"  th:field="*{currency}" required />
+	            
+	            <label>Charge Bearer (ChrgBr):</label>
+	             <input type="text"  th:field="*{chargeBearer}" required />
+	            
+	            
+	            
+	            <label> cdtr Name:</label>
+	            <input type="text" name="cdtrName"  th:field="*{creditorName}" required><br>
+	            
+	            <label>CdtrAcct - IBAN:</label>
+	            <input type="text" name="cdtrIban" th:field="*{creditorIban}" required><br>
+	            
+	            <label>dbtrName:</label>
+	            <input type="text" name="dbtrName"  th:field="*{debtorName}"  required><br>
+	            
+	            <label>DbtrAcct - IBAN:</label>
+	            <input type="text" name="dbtrIban" th:field="*{debtorIban}" required><br>
+
+	            <button>Valider</button>
+
+	        </form>
+	        
+	        
+
+	            <!-- PACS 009 Forms -->
+	            <form id="pacs009" class="pacs-form hidden"th:action="@{/Pacs/generatePacs009}" method="post" th:object="${pacs009DTO}">
+
+	                    <label>BIC de la banque initiatrice</label>
+	            <input type="text" name="InstgAgt_BIC"  th:field="*{senderBic}" title="Format BIC attendu : AAAABBCC" required placeholder="ex: BABCALXX">
+
+	            <label>BIC de la banque du bénéficiaire</label>
+	            <input type="text" name="CdtrAgt_BIC"  th:field="*{receiverBic}" >
+
+	            <label>Instruction ID (InstrId):</label>
+	            <input type="text" name="instrId"  th:field="*{instructionId}" required><br>
+	            
+	            <label>End to End ID (EndToEndId):</label>
+	            <input type="text" name="endToEndId"  th:field="*{endToEndId}" required><br>
+	            
+	            <label>Amount:</label>
+	            <input type="number" name="amount" step="0.01" required min="1" th:field="*{amount}"  placeholder="ex: 1000.00"><br>
+	            
+	            <label>Currency:</label>
+	            <input type="text"  th:field="*{currency}" required />
+	            
+	            <label>Charge Bearer (ChrgBr):</label>
+	             <input type="text"  th:field="*{chargeBearer}" required />	            
+	            
+	            <label> cdtr Name:</label>
+	            <input type="text" name="cdtrName"  th:field="*{creditorName}" required><br>
+	            
+	            <label>messageId:</label>
+	            <input type="text" name="messageId" th:field="*{messageId}" required><br>
+	            
+	            <label>dbtrName:</label>
+	            <input type="text" name="dbtrName"  th:field="*{debtorName}"  required><br>
+	            
+	        
+
+	            <button>Valider</button>
+
+	        </form>
+	            
+
+	            <!-- PACS 004 Forms -->
+	            </form>
+	            <!-- PACS 004 Forms -->
+	            <form id="pacs004" class="pacs-form hidden"th:action="@{/Pacs/generatePacs004}" th:object="${pacs004DTO}" method="post">
+                          <label>Message ID: <input type="text" th:field="*{messageId}" /></label><br/>
+                         <label>Instructing Agent BIC: <input type="text" th:field="*{instructingAgentBic}" /></label><br/>
+                         <label>Instructed Agent BIC: <input type="text" th:field="*{instructedAgentBic}" /></label><br/>
+                        
+                         <legend>Original Transaction</legend>
+                         <label>Original Message ID: <input type="text" th:field="*{originalMessageId}" /></label><br/>
+                         <label>Original Message Name: <input type="text" th:field="*{originalMessageName}" /></label><br/>
+                         <label>Original Instruction ID: <input type="text" th:field="*{originalInstructionId}" /></label><br/>
+                         <label>Original EndToEnd ID: <input type="text" th:field="*{originalEndToEndId}" /></label><br/>
+                         <label>Original Transaction ID: <input type="text" th:field="*{originalTransactionId}" /></label><br/>
+                        
+                         <legend>Return Information</legend>
+                         <label>Return ID: <input type="text" th:field="*{returnId}" /></label><br/>
+                         <label>Returned Amount: <input type="text" th:field="*{returnedAmount}" /></label><br/>
+                         <label>Currency: <input type="text" th:field="*{currency}" /></label><br/>
+                         <label>Return Reason Code: <input type="text" th:field="*{returnReasonCode}" /></label><br/>
+                         <label>Additional Info: <input type="text" th:field="*{additionalInfo}" /></label><br/>
+                        
+                         <legend>Debtor</legend>
+                         <label>Name: <input type="text" th:field="*{debtorName}" /></label><br/>
+                         <label>IBAN: <input type="text" th:field="*{debtorIban}" /></label><br/>
+                        
+                         <legend>Creditor</legend>
+                         <label>Name: <input type="text" th:field="*{creditorName}" /></label><br/>
+                         <label>IBAN: <input type="text" th:field="*{creditorIban}" /></label><br/>
+                        
+                         <legend>Remittance Info</legend>
+                         <label>Unstructured Info: <input type="text" th:field="*{remittanceInformation}" /></label><br/>
+        
+	                <button>Valider</button>
+
+	            </form>
+
+	            <!-- PACS 003 Forms -->
+	        <form id="pacs003" class="pacs-form hidden"th:action="@{/Pacs/generatePacs003}" method="post" th:object="${pacs003DTO}">
+           
+	           <label>Message ID:</label>
+            <input type="text" th:field="*{messageId}" /><br/>
+
+            <label>Creation Date Time:</label>
+            <input type="datetime-local" th:field="*{creationDateTime}" /><br/>
+
+            <label>Number of Transactions:</label>
+            <input type="number" th:field="*{numberOfTransactions}" /><br/>
+
+            <label>Control Sum:</label>
+            <input type="number" step="0.01" th:field="*{controlSum}" /><br/>
+
+            <label>Instructing Agent BIC:</label>
+            <input type="text" th:field="*{instructingAgentBic}" /><br/>
+
+            <label>Instructed Agent BIC:</label>
+            <input type="text" th:field="*{instructedAgentBic}" /><br/>
+            
+            <label>End to End ID:</label>
+            <input type="text" th:field="*{endToEndId}" /><br/>
+
+            <label>Amount:</label>
+            <input type="number" step="0.01" th:field="*{amount}" /><br/>
+
+            <label>Currency:</label>
+            <input type="text" th:field="*{currency}" /><br/>
+            
+             <label>Debtor Name:</label>
+            <input type="text" th:field="*{debtorName}" /><br/>
+
+            <label>Debtor IBAN:</label>
+            <input type="text" th:field="*{debtorIban}" /><br/>
+
+            <label>Creditor Name:</label>
+            <input type="text" th:field="*{creditorName}" /><br/>
+
+            <label>Creditor IBAN:</label>
+            <input type="text" th:field="*{creditorIban}" /><br/>
+
+	        <button>Valider</button>
+
+	    </form>
+	            
+	    <!-- PACS 002 Forms -->
+	    <form id="pacs002" class="pacs-form hidden"th:action="@{/Pacs/generatePacs002}" method="post" th:object="${pacs002DTO}">
+	    
+
+	           <label>Original Message ID:</label>
+        <input type="text" th:field="*{originalMessageId}" /><br/>
+
+        <label>Original End-To-End ID:</label>
+        <input type="text" th:field="*{originalEndToEndId}" /><br/>
+
+        <label>Status:</label>
+        <select th:field="*{status}">
+            <option value="ACCP">Accepted</option>
+            <option value="RJCT">Rejected</option>
+            <option value="PDNG">Pending</option>
+            <option value="PART">Partially Accepted</option>
+            <option value="TECH">Technical Failure</option>
+            <option value="CANC">Cancelled</option>
+        </select><br/>
+
+        <label>Reason Code:</label>
+        <input type="text" th:field="*{reasonCode}" /><br/>
+
+        <label>Reason Text:</label>
+        <input type="text" th:field="*{reasonText}" /><br/>
+
+        <label>Additional Information:</label>
+        <input type="text" th:field="*{additionalInformation}" /><br/>
+
+        <label>Original Amount:</label>
+        <input type="number" step="0.01" th:field="*{originalAmount}" /><br/>
+
+        <label>Original Currency:</label>
+        <input type="text" th:field="*{originalCurrency}" /><br/>
+
+
+	                <button>Valider</button>
+	        
+	    </form>
+	    </div>
+
+	    <div id="uploadSection" class="form-group hidden">
+	       <form action="/Pacs/uploadXml" method="post" enctype="multipart/form-data">
+           <input type="file" name="file" accept=".xml" required />
+           <button type="submit">Upload XML</button>
+           </form>
+
+	    </div>
+
+	</div>
+
+    </div>
+    <script src="/js/main.js"></script>
+    <script src="/js/form.js"></script>
+    <script src="/js/language.js"></script>
+    <script src="/js/darkmode.js"></script>
+</body>
+</html>

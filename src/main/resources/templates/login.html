@@ -1,0 +1,33 @@
+<!--  -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/login.css">
+    <title>Login BPDZ</title>
+</head>
+<body>
+<div class="login-box">
+    <div class="logo">
+        <img src="/css/image/raw.png" alt="Bank Logo">
+    </div>
+    <div class="slove">
+        <h1>Welcome to BPDZ</h1>
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <div class="input-box">
+            <input type="text" class="input-field" name="login" placeholder="Email" autocomplete="off" required>
+        </div>
+        <div class="input-box">
+            <input type="password" class="input-field" name="motDePasse" placeholder="Password" autocomplete="off" required>
+        </div>
+        <div class="input-submit">
+            <button type="submit" class="submit-btn">Log In</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

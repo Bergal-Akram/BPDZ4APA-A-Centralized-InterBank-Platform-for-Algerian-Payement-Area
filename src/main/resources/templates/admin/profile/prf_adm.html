@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <title>ADMIN</title>
+  </head>
+  <body>
+ <nav>
+    <div class="nav__header">
+      <div class="nav__logo">
+        <a class="logo">BPDZ</a>
+      </div>
+    </div>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="/login" data-i18n="home_tr">HOME</a></li>
+      <li class="dropdown">
+        <a><span data-i18n="SERVICES_tr">SERVICES</span> <i class="ri-arrow-down-s-line"></i></a>
+        <ul class="dropdown-content">
+          <li class="dropdown-item">
+            <a> <span data-i18n="ViewTables_tr">View Tables</span> <i class="ri-arrow-right-s-line"></i></a>
+            <ul class="dropdown-submenu">
+              <li><a href="/archive" data-i18n="Archive_tr">Archive</a></li>
+              <li><a href="/movment" data-i18n="movements_tr">movement</a></li>
+              <li><a href="/compte" data-i18n="accounts_tr">account</a></li>
+              <li><a href="/dir" data-i18n="directory_tr">directory</a></li>
+              <li><a href="/fraud" data-i18n="fraud_tr">fraud</a></li>
+              <li><a href="/mondat" data-i18n="mondat_tr">mondat</a></li>
+              <li><a href="/pret" data-i18n="loan_tr">loan</a></li>
+              <li><a href="/habi" data-i18n="habilitation_tr">habilitation</a></li>
+              <li><a href="/service" data-i18n="services_tr">service</a></li>
+            </ul>
+          </li>
+          <li><a href="/admin/add/add_auditor/add_audi" data-i18n="Add_table_tr">Add Table</a></li>
+          <li><a href="/admin/add/add_compte/add_prof" data-i18n="Add_Account_tr">Add Account</a></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="nav__btns">
+      <li><a href="/profile">PROFILE</a></li>
+      <select id="language-select" class="lang">
+        <option value="en">EN</option>
+        <option value="fr">FR</option>
+      </select>
+      <button id="toggleDarkMode" class="lang" data-i18n="dark_mode">Dark Mode</button>
+    </div>
+  </nav>  
+
+   <div th:each="banks:${banks}">
+        <section class="section__container bank-info">
+            <h1> Your Information </h1>
+
+            <p><strong>BIC:</strong> <span th:text ="${banks.bic}"></span></p>
+        
+        <p><strong>ISO20022:</strong> <span th:text ="${banks.iso20022Integration}"></span></p>
+        <p><strong>Nom:</strong> <span th:text ="${banks.nomCorrespondant}"></span></p>
+        <p><strong>Tel:</strong> <span th:text ="${banks.tel}"></span></p>
+        <p><strong>email:</strong> <span th:text ="${banks.mail}"></span></p>
+        </section>
+
+        <!-- Table of Accounts  -->
+        <section class="section__container bank-info">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nature Compte</th>
+                        <th>Numéro Compte</th>
+                        <th>Solde</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each ="compte: ${compte}">
+            <td th:text ="${compte.natureCompte}"></td>
+            <td th:text ="${compte.numeroCompte}"></td>
+            <td th:text ="${compte.solde}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <div class="logout__container">
+    <form th:action="@{/sigin}" method="get" class="bnt_logout" style="display: inline;">
+        <button type="submit" style="all: unset; cursor: pointer;">
+            <i class="ri-login-box-line"></i>
+            Log Out
+        </button>
+    </form>
+</div>
+
+        <script src="/js/main.js"></script>
+        <script src="/js/language.js"></script>
+        <script src="/js/darkmode.js"></script>
+</body>
+</html>
